@@ -1,0 +1,28 @@
+{
+  "name": "win32filetime",
+  "version": "1.0.0",
+  "description": "Convert from Win32 FILETIME struct to UNIX/JS time, and vice-versa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielgindi/node-win32filetime"
+  },
+  "keywords": [
+    "filetime",
+    "win32",
+    "timestamp",
+    "datetime"
+  ],
+  "author": "Daniel Cohen Gindi <danielgindi@gmail.com> (https://github.com/danielgindi)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danielgindi/node-win32filetime/issues"
+  },
+  "homepage": "https://github.com/danielgindi/node-win32filetime",
+  "dependencies": {
+    "long": "^3.1.0",
+  }
+}
