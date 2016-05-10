@@ -16,15 +16,23 @@ npm install --save win32filetime
 
 var FileTime = require('win32filetime');
 
-console.log( new Date( FileTime.fromFileTime(513851392, 30269198) ).toISOString() ); // --> 2012-12-21T00:00:00.000Z
+console.log( FileTime.toUnix(513851392, 30269198) ); // --> 1356048000000
 
-console.log( new Date( FileTime.fromFileTime({ low: 0, high: 0 }) ).toISOString() ); // --> 1601-01-01T00:00:00.000Z
+console.log( FileTime.toDate(513851392, 30269198).toISOString() ); // --> 2012-12-21T00:00:00.000Z
 
-console.log( FileTime.toFileTime(new Date(2017, 7, 23, 5, 4, 29)) ); // --> { low: 658060416, high: 30612404 }
+console.log( FileTime.toDate({ low: 0, high: 0 }).toISOString() ); // --> 1601-01-01T00:00:00.000Z
 
-console.log( FileTime.toFileTime(Date.now()) ); // --> { low: -214280784, high: 30517728 }
+console.log( FileTime.fromDate(new Date(2017, 7, 23, 5, 4, 29)) ); // --> { low: 658060416, high: 30612404 }
+
+console.log( FileTime.fromUnix(Date.now()) ); // --> { low: -214280784, high: 30517728 }
 
 ```
+
+`fromDate` and `fromUnix` are synonyms. Both will accepts either a `Date` or a `Number`.  
+`toDate` is a just wrapper around `new Date( FileTime.toUnix(...) )`.  
+Core functions are simply `fromUnix` and `toUnix`
+
+The namings from the first release still work (`fromFileTime`, `toFileTime`).
 
 ## Contributing
 
