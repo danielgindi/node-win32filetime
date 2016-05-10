@@ -5,7 +5,7 @@
 
 var Long = require('long');
 
-module.exports = {
+var FileTime = {
 
     /**
      * Convert a Win32 FILETIME structure to a `Date` object
@@ -13,7 +13,7 @@ module.exports = {
      * @param {int} high
      * @returns {Number} A unix time. Can be converted to Date lie "new Date(time)"
      */
-    fromFileTime: function (low, high) {
+    toUnix: function (low, high) {
         
         if (typeof low === 'object' && high === undefined) {
             high = arguments[0].high;
@@ -32,10 +32,10 @@ module.exports = {
 
     /**
      * Convert a `Date` object to a Win32 FILETIME structure
-     * @param {Date|Number} date
+     * @param {Date|Number} date object or unix time
      * @returns {{low: int, high: int}}
      */
-    toFileTime: function (date) {
+    fromUnix: function (date) {
 
         var timestamp = +date;
         var long = Long
@@ -47,3 +47,21 @@ module.exports = {
     }
 
 };
+
+FileTime.fromDate = FileTime.fromUnix;
+
+/**
+ * Convert a Win32 FILETIME structure to a `Date` object
+ * @param {int} low
+ * @param {int} high
+ * @returns {Date} A javascript Date object.
+ */
+FileTime.toDate = function (, high) {
+    return new Date(this.toUnix.apply(this, arguments));
+};
+
+// The first names that I chose. I don't like those.
+FileTime.fromFileTime = FileTime.toUnix;
+FileTime.toFileTime = FileTime.fromUnix;
+
+module.exports = FileTime;
