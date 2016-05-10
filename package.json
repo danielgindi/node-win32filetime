@@ -1,6 +1,6 @@
 {
   "name": "win32filetime",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert from Win32 FILETIME struct to UNIX/JS time, and vice-versa",
   "main": "index.js",
   "scripts": {
