@@ -56,7 +56,7 @@ FileTime.fromDate = FileTime.fromUnix;
  * @param {int} high
  * @returns {Date} A javascript Date object.
  */
-FileTime.toDate = function (, high) {
+FileTime.toDate = function (low, high) {
     return new Date(this.toUnix.apply(this, arguments));
 };
 
