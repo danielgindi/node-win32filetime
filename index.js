@@ -1,19 +1,16 @@
-/**
- * This will convert between Win32 FILETIME structure and JavaScript Date object.
- * Written by danielgindi@gmail.com
- */
+'use strict';
 
-var Long = require('long');
+const Long = require('long');
 
-var FileTime = {
+class FileTime {
 
     /**
      * Convert a Win32 FILETIME structure to a `Date` object
      * @param {int} low
      * @param {int} high
-     * @returns {Number} A unix time. Can be converted to Date lie "new Date(time)"
+     * @returns {number} A unix time. Can be converted to Date lie "new Date(time)"
      */
-    toUnix: function (low, high) {
+    static toUnix(low, high) {
         
         if (typeof low === 'object' && high === undefined) {
             high = arguments[0].high;
@@ -28,17 +25,17 @@ var FileTime = {
         }
 
         return epochBase.toNumber();
-    },
+    }
 
     /**
-     * Convert a `Date` object to a Win32 FILETIME structure
-     * @param {Date|Number} date object or unix time
+     * Convert a unix timestamp or `Date` object to a Win32 FILETIME structure
+     * @param {Date|number} date object or unix time
      * @returns {{low: int, high: int}}
      */
-    fromUnix: function (date) {
+    static fromUnix(date) {
 
-        var timestamp = +date;
-        var long = Long
+        const timestamp = +date;
+        const long = Long
             .fromNumber(timestamp, timestamp >= 0)
             .add(11644473600000)
             .mul(10000);
@@ -46,22 +43,47 @@ var FileTime = {
         return { low: long.getLowBitsUnsigned(), high: long.getHighBitsUnsigned() };
     }
 
+    /**
+     * Convert a `Date` object to a Win32 FILETIME structure
+     * @param {Date} date
+     * @returns {{low: int, high: int}}
+     */
+    static fromDate(date) {
+        return FileTime.fromUnix(date);
+    }
+    
+    /**
+     * Convert a Win32 FILETIME structure to a `Date` object
+     * @param {int} low
+     * @param {int} high
+     * @returns {Date} A javascript Date object.
+     */
+    static toDate(low, high) {
+        return new Date(FileTime.toUnix(low, high));
+    }
+    
+    /**
+     * Convert a Win32 FILETIME structure to a `Date` object
+     * @param {int} low
+     * @param {int} high
+     * @returns {number} A unix time. Can be converted to Date lie "new Date(time)"
+     * @deprecated use `FileTime.toUnix(low, high)` instead
+     */
+    static fromFileTime(low, high) {
+        return FileTime.toUnix(low, high);
+    }
+    
+    /**
+     * Convert a js timestamp or `Date` object to a Win32 FILETIME structure
+     * @param {Date|number} date object or unix time
+     * @returns {{low: int, high: int}}
+     * @deprecated use `FileTime.fromUnix(low, high)` instead
+     */
+    static toFileTime(date) {
+        return FileTime.fromUnix(date);
+    }
+
 };
 
-FileTime.fromDate = FileTime.fromUnix;
-
-/**
- * Convert a Win32 FILETIME structure to a `Date` object
- * @param {int} low
- * @param {int} high
- * @returns {Date} A javascript Date object.
- */
-FileTime.toDate = function (low, high) {
-    return new Date(this.toUnix.apply(this, arguments));
-};
-
-// The first names that I chose. I don't like those.
-FileTime.fromFileTime = FileTime.toUnix;
-FileTime.toFileTime = FileTime.fromUnix;
-
+/** @type {typeof FileTime} */
 module.exports = FileTime;

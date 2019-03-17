@@ -14,7 +14,7 @@ npm install --save win32filetime
 
 ```javascript
 
-var FileTime = require('win32filetime');
+const FileTime = require('win32filetime');
 
 console.log( FileTime.toUnix(513851392, 30269198) ); // --> 1356048000000
 
@@ -31,8 +31,6 @@ console.log( FileTime.fromUnix(Date.now()) ); // --> { low: -214280784, high: 30
 `fromDate` and `fromUnix` are synonyms. Both will accepts either a `Date` or a `Number`.  
 `toDate` is a just wrapper around `new Date( FileTime.toUnix(...) )`.  
 Core functions are simply `fromUnix` and `toUnix`
-
-The namings from the first release still work (`fromFileTime`, `toFileTime`).
 
 ## Contributing
 
